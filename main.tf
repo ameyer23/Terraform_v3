@@ -1,5 +1,6 @@
 # Configure the AWS Provider
 provider "aws" {
+  #can add access keys here, but it is not recommended
   region = "us-east-1"
 }
 
@@ -113,5 +114,18 @@ resource "aws_nat_gateway" "nat_gateway" {
   subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id
   tags = {
     Name = "demo_nat_gateway"
+  }
+}
+
+#create EC2 Instance witihin pubic subnet
+resource "aws_instance" "web" {
+  ami           = "ami-00b8917ae86a424c9"
+  instance_type = "t2.micro"
+
+  subnet_id              = aws_subnet.public_subnets["public_subnet_1"].id #got this from above
+  vpc_security_group_ids = ["sg-0e9b32afbc52b0671"]
+
+  tags = {
+    "Terraform" = "true"
   }
 }
