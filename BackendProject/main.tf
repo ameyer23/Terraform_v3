@@ -159,6 +159,7 @@ resource "aws_subnet" "variables-subnet" {
 #Create Remote S3 State Store
 resource "aws_s3_bucket" "tf-state-bucket" {
   bucket = "tf-state-bucket-${random_id.randomness.hex}"
+  force_destroy = true          #forces deletion of bucket AND its contents
   tags = {
     Name    = "tf state S3 Bucket"
     Purpose = "remote state storage"
@@ -198,4 +199,5 @@ resource "aws_dynamodb_table" "dynamodb-state-lock" {
     type = "S"
   }
 }
+
 
